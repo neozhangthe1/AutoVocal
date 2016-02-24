@@ -10,7 +10,7 @@ def framewiseEval(resTracks, groundTruthTracks):
     estTimes = resTracks[:,0]
     reference = np.zeros([Tref, GTTracks.shape[1]-1])
     reference[:,:] = GTTracks[:,1:]
-    print reference.shape
+    print(reference.shape)
     
     nTracks = resTracks.shape[1] - 1
     newResTracks = np.zeros([Tref, nTracks])
@@ -26,7 +26,7 @@ def framewiseEval(resTracks, groundTruthTracks):
     # Setting same number of tracks:
     ## nTracks = np.maximum(nTracks, reference.shape[1])
 
-    print newResTracks.shape
+    print(newResTracks.shape)
     
     # setting the boundaries for tolerance of error:
     reference_low = 0.97 * reference
