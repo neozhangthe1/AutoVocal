@@ -16,6 +16,7 @@ https://github.com/acknak/Nakloid
 ## Pitch matching
 
 ## TTS
+https://www.quora.com/Speech-Synthesis/How-can-I-make-the-synthesized-voices-in-Festival-MaryTTS-sound-more-natural
 
 ## MIDI parser
 
