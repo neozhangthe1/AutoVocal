@@ -9,3 +9,13 @@ http://www.durrieu.ch/research/jstsp2010.html
 
 Nakloid: Unit-waveform-oriented Singing Voice Synthesis System
 https://github.com/acknak/Nakloid
+
+
+## Word animation
+
+## Pitch matching
+
+## TTS
+
+## MIDI parser
+
