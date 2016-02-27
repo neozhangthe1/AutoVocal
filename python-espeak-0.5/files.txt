@@ -1,0 +1,8 @@
+/usr/local/lib/python2.7/site-packages/espeak/__init__.py
+/usr/local/lib/python2.7/site-packages/espeak/_repr.py
+/usr/local/lib/python2.7/site-packages/espeak/espeak.py
+/usr/local/lib/python2.7/site-packages/espeak/__init__.pyc
+/usr/local/lib/python2.7/site-packages/espeak/_repr.pyc
+/usr/local/lib/python2.7/site-packages/espeak/espeak.pyc
+/usr/local/lib/python2.7/site-packages/espeak/core.so
+/usr/local/lib/python2.7/site-packages/python_espeak-0.5-py2.7.egg-info

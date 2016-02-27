@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: python-espeak
+Version: 0.5
+Summary: Python bindings for the eSpeak speech synthesizer
+Home-page: https://launchpad.net/python-espeak
+Author: Siegfried-A. Gevatter Pujals
+Author-email: rainct@ubuntu.com
+License: GPL
+Description: UNKNOWN
+Platform: posix
