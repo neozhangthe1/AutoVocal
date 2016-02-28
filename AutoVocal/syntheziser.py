@@ -15,7 +15,9 @@ def generate_song():
     root = ET.fromstring(params)
     word_nodes = root.findall(".//{http://mary.dfki.de/2002/MaryXML}t")
     syllable_nodes = root.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable")
-    syllables = generate_syllables(syllable_nodes, word_nodes)
+
+    rhythms, pitches, velocities = parse_midi()
+    syllables = generate_syllables(syllable_nodes, word_nodes, rhythms, pitches)
     modify_xml(syllables, syllable_nodes)
 
 
