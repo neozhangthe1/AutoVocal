@@ -1,6 +1,7 @@
 from .maryclient_http import maryclient
 from xml.etree import ElementTree as ET
 import mido
+import mido.messages
 from .syllable import Syllable
 import math
 
@@ -21,31 +22,41 @@ def generate_song():
 def parse_midi():
     mid = mido.MidiFile("../data/music/birthday.mid")
     track = mid.tracks[0]
+    rhythms = []
+    pitches = []
+    velocities = []
+    cur_time = 0
+    cur_pitch = 0
+    cur_velocity = 0
+    for m in track:
+        if type(m) is mido.messages.Message:
+            if m.type == "note_on":
+                cur_time += m.time
+                cur_pitch = m.note
+                cur_velocity = m.velocity
+            elif m.type == "note_off":
+                rhythms.append((cur_time, m.time))
+                pitches.append((cur_pitch, m.note))
+                velocities.append((cur_velocity, m.velocity))
+                cur_time += m.time
+    return rhythms, pitches, velocities
 
 
-def get_rhythm():
-    pass
-
-
-def get_pitch():
-    pass
-
-
-def generate_syllables(syllable_nodes, word_nodes):
+def generate_syllables(syllable_nodes, word_nodes, rhythms, pitches):
     tempo = 120
-    num_words = len(syllable_nodes)
     syllables = []
-    end = False
+    offset = 0
+    cur_time = 0
 
     for i, w in enumerate(word_nodes):
-        if i == num_words - 1:
-            end = True
-        cur_syllable_elements = w.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable")
-        for s in cur_syllable_elements:
-            pitch = get_pitch()
-            duration = get_rhythm()
-            syllable = Syllable(pitch, duration, tempo)
-            syllables.append(syllable)
+        cur_syl_elements = w.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable")
+        prefix = rhythms[offset] - cur_time
+        syllables.append(prefix)
+        for s in cur_syl_elements:
+            syllable = Syllable(pitches[offset][0], rhythms[offset][1], tempo)
+            syllables.append((offset, syllable))
+            cur_time = rhythms[offset][0] + rhythms[offset][1]
+            offset += 1
     return syllables
 
 
@@ -58,7 +69,7 @@ def modify_xml(syllables, nodes):
         for p in phoneme_nodes:
             phoneme_duration = int(p.attrib["d"])
             for ch in p.attrib["p"]:
-                if ch.upper() in VOWELS:
+                if ch.upper() in VOWELS.upper():
                     phoneme_duration *= 2
             durations.append(phoneme_duration)
             total_duration += phoneme_duration
