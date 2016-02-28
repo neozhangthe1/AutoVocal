@@ -76,14 +76,16 @@ def generate_syllables(syllable_nodes, word_nodes, rhythms, pitches):
 def modify_xml(syllables, nodes):
     new_nodes = []
     offset = 0
+    w_offset = 0
     for w in nodes:
         for s in w.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable"):
             total_duration = 0
             durations = []
             if type(syllables[offset]) is int:
                 dummy_node = ET.fromstring('<boundary breakindex="5" duration="%s"/>' % syllables[offset])
-                new_nodes.append((offset, dummy_node))
+                new_nodes.append((w_offset, dummy_node))
                 offset += 1
+                w_offset += 1
             syl = syllables[offset]
             phoneme_nodes = s.findall(".//{http://mary.dfki.de/2002/MaryXML}ph")
             for p in phoneme_nodes:
@@ -102,5 +104,6 @@ def modify_xml(syllables, nodes):
                 p.attrib["d"] = str(durations[j])
                 p.attrib["f0"] = "(1,%s)(100,%s)" % (syl[1].pitch, syl[1].pitch)
             offset += 1
+        w_offset += 1
 
     return new_nodes
