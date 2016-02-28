@@ -11,7 +11,7 @@ VOWELS = "A{6QE@3IO29&U}VY=~"
 def generate_song():
     client = maryclient()
     client.set_audio("WAVE_FILE")
-    params = client.generate("happy birthday to you happy birthday to you happy birthday to you happy birthday to you", "TEXT", "ACOUSTPARAMS")
+    params = client.generate("happy birthday to you happy birthday to you happy birthday de ar baby happy birthday to you", "TEXT", "ACOUSTPARAMS")
     ET.register_namespace('', "http://mary.dfki.de/2002/MaryXML")
     root = ET.fromstring(params)
     word_nodes = root.findall(".//{http://mary.dfki.de/2002/MaryXML}t")
@@ -74,12 +74,12 @@ def generate_syllables(syllable_nodes, word_nodes, rhythms, pitches):
 
 
 def modify_xml(syllables, nodes):
-    durations = []
     new_nodes = []
     offset = 0
     for w in nodes:
         for s in w.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable"):
             total_duration = 0
+            durations = []
             if type(syllables[offset]) is int:
                 dummy_node = ET.fromstring('<boundary breakindex="5" duration="%s"/>' % syllables[offset])
                 new_nodes.append((offset, dummy_node))
