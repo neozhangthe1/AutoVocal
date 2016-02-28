@@ -14,9 +14,11 @@ https://github.com/acknak/Nakloid
 ## Word animation
 
 ## Pitch matching
+pyaudio
 
 ## TTS
 https://www.quora.com/Speech-Synthesis/How-can-I-make-the-synthesized-voices-in-Festival-MaryTTS-sound-more-natural
 
 ## MIDI parser
+https://musescore.org/en/handbook/soundfont
 
