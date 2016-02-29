@@ -3,7 +3,6 @@ from xml.etree import ElementTree as ET
 import mido
 import mido.messages
 from AutoVocal.syllable import Syllable
-import math
 
 VOWELS = "A{6QE@3IO29&U}VY=~"
 
@@ -11,7 +10,7 @@ VOWELS = "A{6QE@3IO29&U}VY=~"
 def generate_song():
     client = maryclient()
     client.set_audio("WAVE_FILE")
-    params = client.generate("happy birthday to you happy birthday to you happy birthday de ar baby happy birthday to you", "TEXT", "ACOUSTPARAMS")
+    params = client.generate("We are having a problem billing your account happy birthday to you happy birthday to you happy birthday de ar baby happy birthday to you", "TEXT", "ACOUSTPARAMS")
     ET.register_namespace('', "http://mary.dfki.de/2002/MaryXML")
     root = ET.fromstring(params)
     word_nodes = root.findall(".//{http://mary.dfki.de/2002/MaryXML}t")
@@ -26,9 +25,8 @@ def generate_song():
         wraper_node.insert(n[0], n[1])
 
 
-
 def parse_midi():
-    mid = mido.MidiFile("data/music/birthday.mid")
+    mid = mido.MidiFile("data/music/slamdunk.mid")
     track = mid.tracks[0]
     rhythms = []
     pitches = []
@@ -36,22 +34,34 @@ def parse_midi():
     cur_time = 0
     cur_pitch = 0
     cur_velocity = 0
+    tempo = 500000
+    time_per_tick = get_time_per_tick(tempo, mid.ticks_per_beat)
     for m in track:
+        real_time = round(m.time * time_per_tick)
         if type(m) is mido.messages.Message:
             if m.type == "note_on":
-                cur_time += m.time
                 cur_pitch = m.note
                 cur_velocity = m.velocity
             elif m.type == "note_off":
-                rhythms.append((cur_time, m.time))
+                rhythms.append((cur_time, real_time))
                 pitches.append((cur_pitch, m.note))
                 velocities.append((cur_velocity, m.velocity))
-                cur_time += m.time
+        elif m.type == 'set_tempo':
+            tempo = m.tempo
+            time_per_tick = get_time_per_tick(tempo, mid.ticks_per_beat)
+        cur_time += real_time
+
     return rhythms, pitches, velocities
 
 
 def pitch_to_freq(d):
     return 2 ** ((d - 69) / 12) * 440
+
+
+def get_time_per_tick(tempo, ticks_per_beat):
+    # default tempo is 500000 microseconds per beat (quarter note)
+    # 120 bpm
+    return float(tempo) / 1000 / ticks_per_beat
 
 
 def generate_syllables(syllable_nodes, word_nodes, rhythms, pitches):
