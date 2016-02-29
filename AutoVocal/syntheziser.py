@@ -10,7 +10,7 @@ VOWELS = "A{6QE@3IO29&U}VY=~"
 def generate_song():
     client = maryclient()
     client.set_audio("WAVE_FILE")
-    params = client.generate("We are having a problem billing your account happy birthday to you happy birthday to you happy birthday de ar baby happy birthday to you", "TEXT", "ACOUSTPARAMS")
+    params = client.generate("happy birthday to you happy birthday to you happy birthday de ar baby happy birthday to you", "TEXT", "ACOUSTPARAMS")
     ET.register_namespace('', "http://mary.dfki.de/2002/MaryXML")
     root = ET.fromstring(params)
     word_nodes = root.findall(".//{http://mary.dfki.de/2002/MaryXML}t")
@@ -26,7 +26,7 @@ def generate_song():
 
 
 def parse_midi():
-    mid = mido.MidiFile("data/music/slamdunk.mid")
+    mid = mido.MidiFile("data/music/birthday.mid")
     track = mid.tracks[0]
     rhythms = []
     pitches = []
