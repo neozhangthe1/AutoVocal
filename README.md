@@ -12,6 +12,10 @@ https://github.com/acknak/Nakloid
 
 
 ## Word animation
+http://jquery-plugins.net/tag/text-effect
+https://zulko.github.io/moviepy/examples/star_worms.html
+https://jschr.github.io/textillate/
+http://blogs.sitepointstatic.com/examples/tech/css3-starwars/index.html
 
 ## Pitch matching
 pyaudio
