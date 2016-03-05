@@ -32,7 +32,7 @@ class maryclient:
     def __init__(self):
         """Set up useful defaults (for
            people in England, anyway)"""
-        self.host = "127.0.0.1"
+        self.host = "mary.dfki.de"
         self.port = 59125
         self.input_type = "TEXT"
         self.output_type = "AUDIO"
@@ -110,7 +110,7 @@ class maryclient:
            (such as "dfki-prudence-hsmm")."""
         self.voice
 
-    def generate(self, message, input_type, output_type):
+    def generate(self, message, input_type, output_type, voice):
         """Given a message in message,
            return a response in the appropriate
            format."""
@@ -119,7 +119,7 @@ class maryclient:
                       "OUTPUT_TYPE": output_type,
                       "LOCALE": self.locale,
                       "AUDIO": self.audio,
-                      "VOICE": self.voice,
+                      "VOICE": voice,
                       }
         params = urllib.parse.urlencode(raw_params)
         headers = {}
