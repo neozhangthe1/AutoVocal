@@ -120,10 +120,16 @@ def generate_silent_node(duration):
     return ET.fromstring('<boundary breakindex="5" duration="%s"/>' % duration)
 
 
-def generate_syllable_node(node, duration, pitch):
+def generate_phoneme_node(duration, pitch):
+    f0 = "(1,%s)(100,%s)" % (pitch, pitch)
+    return ET.fromstring('<ph d="%s" end="0.0001" f0="%s" p="l"/>' % (duration, f0))
+
+
+def generate_syllable_node(node, notes, rhythms, pitches):
     consonant_duration = 0
     vowel_offset = None
     durations = []
+    note_offset = 0
 
     phoneme_nodes = node.findall(".//{http://mary.dfki.de/2002/MaryXML}ph")
     for i, p in enumerate(phoneme_nodes):
@@ -135,12 +141,30 @@ def generate_syllable_node(node, duration, pitch):
         durations.append(phoneme_duration)
         consonant_duration += phoneme_duration
 
-    vowel_duration = duration - consonant_duration
-    durations[vowel_offset] = vowel_duration
-
+    # vowel_duration = duration - consonant_duration
+    # durations[vowel_offset] = vowel_duration
+    new_phoneme_nodes = []
     for j, p in enumerate(phoneme_nodes):
-        p.attrib["d"] = str(durations[j])
-        p.attrib["f0"] = "(1,%s)(100,%s)" % (pitch, pitch)
+        # consonant before vowel
+        if j < vowel_offset:
+            pitch = pitches[notes[0]]  # the pitch of the first syllable
+            p.attrib["d"] = str(durations[j])
+            p.attrib["f0"] = "(1,%s)(100,%s)" % (pitch, pitch)
+        # vowel
+        elif j == vowel_offset:
+            pitch = pitches[notes[0]]  # the pitch of the first syllable
+            p.attrib["d"] = str(rhythms[notes[0]][1])
+            p.attrib["f0"] = "(1,%s)(100,%s)" % (pitch, pitch)
+            for k, n in enumerate(notes[1:]):
+                p_node = generate_phoneme_node(rhythms[n][1], pitches[n])
+                new_phoneme_nodes.append((vowel_offset + k + 1, p_node))
+        # consonant after vowel
+        else:
+            pitch = pitches[notes[-1]]  # the pitch of the last syllable
+            p.attrib["d"] = str(durations[j])
+            p.attrib["f0"] = "(1,%s)(100,%s)" % (pitch, pitch)
+    for n in new_phoneme_nodes:
+        node.insert(n[0], n[1])
 
     return node
 
@@ -173,39 +197,25 @@ def allocate_notes(params, bars, rhythms, pitches):
         syl_nodes = w_node.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable")
 
         for j, s_node in enumerate(syl_nodes):
+            notes = []
             if syl_offset_bar < min_syl_per_bar - 1:
-                nodes.append(generate_syllable_node(s_node, bars[bar_offset][syl_offset_bar], rhythms, pitches))
-                syl_offset_bar += 1
+                notes = bars[bar_offset][syl_offset_bar]
             else:
-                # this is not the last syllable of current word
-                if len(syl_nodes) - 1 > j:
-                    nodes.append(generate_syllable_node(s_node, bars[bar_offset][syl_offset_bar], rhythms, pitches))
-                    syl_offset_bar += 1
-                # # the remained beats will be allocated to the current word
-                # if len(syl_nodes[j:]) >= remain_beat:
-                #     notes = []
-                #     for k in range(remain_beat + 1):
-                #         notes += bars[bar_offset][syl_offset_bar + k]
-                #     nodes.append(generate_syllable_node(s_node, notes, rhythms, pitches))
-                else:
-                    # this is the last word
-                    if end:
-                        notes = []
+                if len(syl_nodes) - 1 > j:  # this is not the last syllable of current word
+                    notes = bars[bar_offset][syl_offset_bar]
+                else:  # the last syllable of current word
+                    if end:  # this is the last word
                         for k in bars[bar_offset][syl_offset_bar:]:
                             notes += k
-                        nodes.append(generate_syllable_node(s_node, notes, rhythms, pitches))
-                        syl_offset_bar += 1
                     else:
-                        # there is enough room for the next word
+                        # there is enough room for all the syllables in the next word
                         if len(word_nodes[i+1].findall(".//{http://mary.dfki.de/2002/MaryXML}syllable")):
-                            nodes.append(generate_syllable_node(s_node, bars[bar_offset][syl_offset_bar], rhythms, pitches))
-                            syl_offset_bar += 1
+                            notes = bars[bar_offset][syl_offset_bar]
                         else:
-                            notes = []
                             for k in bars[bar_offset][syl_offset_bar:]:
                                 notes += k
-                            nodes.append(generate_syllable_node(s_node, notes, rhythms, pitches))
-                            syl_offset_bar += 1
+            nodes.append(generate_syllable_node(s_node, notes, rhythms, pitches))
+            syl_offset_bar += 1
 
 
 
