@@ -1,0 +1,156 @@
+
+<!-- saved from url=(0026)http://mary.dfki.de:59125/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+      <title>MARY Web Client</title>
+      <script language="javascript" src="./MARY Web Client_files/mary.js">
+      </script>
+    </head>
+
+    <body onload="initForm();" data-pinterest-extension-installed="cr1.39.1" cz-shortcut-listen="true">
+      <font style="font-family: Verdana">
+      <noscript style="color:red;">JavaScript seems to be disabled! Please enable it to use this interface to MARY!</noscript>
+
+      <table>
+        <tbody><tr>
+          <td><img src="./MARY Web Client_files/favicon.ico"></td>
+          <td>
+            <table>
+              <tbody><tr>
+                <td></td>
+              </tr>
+
+            <tr>
+              <td><h1><font style="color:#587D9D">MARY Web Client</font></h1></td>
+            </tr>
+
+            <tr>
+              <td></td>
+            </tr>
+          </tbody></table>
+        </td>
+
+      </tr>
+    </tbody></table>
+
+
+    <form id="maryWebClient" action="http://mary.dfki.de:59125/process" method="post">
+    <table>
+      <tbody><tr>
+        <td>Input Type:
+          <select id="INPUT_TYPE" name="INPUT_TYPE" size="1" onchange="inputTypeChanged();">
+          <option>TEXT</option><option>SIMPLEPHONEMES</option><option>SABLE</option><option>SSML</option><option>APML</option><option>EMOTIONML</option><option>PHONEMES</option><option>ALLOPHONES</option><option>ACOUSTPARAMS</option><option>RAWMARYXML</option><option>TOKENS</option><option>WORDS</option><option>INTONATION</option><option>REALISED_ACOUSTPARAMS</option><option>REALISED_DURATIONS</option><option>PRAAT_TEXTGRID</option><option>PARTSOFSPEECH</option></select>
+        </td>
+        
+        <td>Output Type:
+          <select id="OUTPUT_TYPE" name="OUTPUT_TYPE" size="1" onchange="outputTypeChanged();">
+          <option>PHONEMES</option><option>ALLOPHONES</option><option>ACOUSTPARAMS</option><option>RAWMARYXML</option><option>TOKENS</option><option>WORDS</option><option>INTONATION</option><option>REALISED_ACOUSTPARAMS</option><option>REALISED_DURATIONS</option><option>PRAAT_TEXTGRID</option><option>PARTSOFSPEECH</option><option>TARGETFEATURES</option><option>AUDIO</option><option>HALFPHONE_TARGETFEATURES</option></select>
+        </td>
+      </tr>
+
+      <tr>
+          <td>
+            <div>Input Text:</div>
+            <textarea id="INPUT_TEXT" name="INPUT_TEXT" rows="30" cols="45"></textarea>
+          </td>
+
+          <td>
+            <span id="outputSection" style="display: none;">
+              <div id="hideOutputText">Output Text:</div>
+              <textarea id="OUTPUT_TEXT" name="OUTPUT_TEXT" rows="30" cols="45" readonly="true"></textarea>
+            </span>
+			<span id="audioEffectsSection" style="display: inline;">
+			  <span id="innerAudioEffectsSection" style="display:none;">
+			  <table>
+			   <tbody><tr>
+			    <td>
+	              <table id="effectsTable">
+	                <tbody><tr>
+	                  <td> </td>
+	                  <td><div id="hideEffects">Effects</div></td> 
+	                  <td><div id="hideParameters">Parameters</div></td>
+	                </tr>
+	              <tr id="effect_Volume"><td><input type="checkbox" id="effect_Volume_selected" name="effect_Volume_selected"></td><td>Volume</td><td><textarea rows="1" cols="20" id="effect_Volume_parameters" name="effect_Volume_parameters"></textarea></td><td><input type="button" id="effect_Volume_default" name="effect_Volume_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_Volume_help" name="effect_Volume_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_TractScaler"><td><input type="checkbox" id="effect_TractScaler_selected" name="effect_TractScaler_selected"></td><td>TractScaler</td><td><textarea rows="1" cols="20" id="effect_TractScaler_parameters" name="effect_TractScaler_parameters"></textarea></td><td><input type="button" id="effect_TractScaler_default" name="effect_TractScaler_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_TractScaler_help" name="effect_TractScaler_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_F0Scale"><td><input type="checkbox" id="effect_F0Scale_selected" name="effect_F0Scale_selected"></td><td>F0Scale</td><td><textarea rows="1" cols="20" id="effect_F0Scale_parameters" name="effect_F0Scale_parameters"></textarea></td><td><input type="button" id="effect_F0Scale_default" name="effect_F0Scale_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_F0Scale_help" name="effect_F0Scale_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_F0Add"><td><input type="checkbox" id="effect_F0Add_selected" name="effect_F0Add_selected"></td><td>F0Add</td><td><textarea rows="1" cols="20" id="effect_F0Add_parameters" name="effect_F0Add_parameters"></textarea></td><td><input type="button" id="effect_F0Add_default" name="effect_F0Add_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_F0Add_help" name="effect_F0Add_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_Rate"><td><input type="checkbox" id="effect_Rate_selected" name="effect_Rate_selected"></td><td>Rate</td><td><textarea rows="1" cols="20" id="effect_Rate_parameters" name="effect_Rate_parameters"></textarea></td><td><input type="button" id="effect_Rate_default" name="effect_Rate_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_Rate_help" name="effect_Rate_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_Robot"><td><input type="checkbox" id="effect_Robot_selected" name="effect_Robot_selected"></td><td>Robot</td><td><textarea rows="1" cols="20" id="effect_Robot_parameters" name="effect_Robot_parameters"></textarea></td><td><input type="button" id="effect_Robot_default" name="effect_Robot_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_Robot_help" name="effect_Robot_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_Whisper"><td><input type="checkbox" id="effect_Whisper_selected" name="effect_Whisper_selected"></td><td>Whisper</td><td><textarea rows="1" cols="20" id="effect_Whisper_parameters" name="effect_Whisper_parameters"></textarea></td><td><input type="button" id="effect_Whisper_default" name="effect_Whisper_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_Whisper_help" name="effect_Whisper_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_Stadium"><td><input type="checkbox" id="effect_Stadium_selected" name="effect_Stadium_selected"></td><td>Stadium</td><td><textarea rows="1" cols="20" id="effect_Stadium_parameters" name="effect_Stadium_parameters"></textarea></td><td><input type="button" id="effect_Stadium_default" name="effect_Stadium_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_Stadium_help" name="effect_Stadium_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_Chorus"><td><input type="checkbox" id="effect_Chorus_selected" name="effect_Chorus_selected"></td><td>Chorus</td><td><textarea rows="1" cols="20" id="effect_Chorus_parameters" name="effect_Chorus_parameters"></textarea></td><td><input type="button" id="effect_Chorus_default" name="effect_Chorus_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_Chorus_help" name="effect_Chorus_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_FIRFilter"><td><input type="checkbox" id="effect_FIRFilter_selected" name="effect_FIRFilter_selected"></td><td>FIRFilter</td><td><textarea rows="1" cols="20" id="effect_FIRFilter_parameters" name="effect_FIRFilter_parameters"></textarea></td><td><input type="button" id="effect_FIRFilter_default" name="effect_FIRFilter_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_FIRFilter_help" name="effect_FIRFilter_help" value="Help" onclick="helpEffect(this)"></td></tr><tr id="effect_JetPilot"><td><input type="checkbox" id="effect_JetPilot_selected" name="effect_JetPilot_selected"></td><td>JetPilot</td><td><textarea rows="1" cols="20" id="effect_JetPilot_parameters" name="effect_JetPilot_parameters"></textarea></td><td><input type="button" id="effect_JetPilot_default" name="effect_JetPilot_default" value="Default" onclick="defaultEffectParams(this)"></td><td><input type="button" id="effect_JetPilot_help" name="effect_JetPilot_help" value="Help" onclick="helpEffect(this)"></td></tr></tbody></table>
+	            </td>
+	            <td>
+	              <span id="helpSection">
+	                <table>
+	                  <tbody><tr><td><div id="hideHelpTextTitle">Help Text:</div></td></tr>
+	                  <tr><td><textarea name="HELP_TEXT" id="HELP_TEXT" rows="15" cols="50" readonly="true"></textarea></td></tr>
+	                </tbody></table>
+	              </span>
+	            </td>
+	           </tr>
+	          </tbody></table>
+	          </span>
+            </span>
+          </td>
+
+        </tr>
+      </tbody></table>
+      <table>
+        <tbody><tr>
+          <td>&nbsp;</td>
+          <td>
+            <select id="exampleTexts" name="exampleTexts" size="1" onchange="exampleChanged();" style="display:none;">
+            </select>
+        	<div id="showHideTargetFeatures" style="display: none;">
+		  		<input type="checkbox" id="specifyTargetFeatures">
+		  		Specify target features:
+		  		<input type="text" value="phone stressed accented" id="targetFeatureList">
+			</div>
+          </td>
+        </tr>
+        <tr>
+          <td>Voice:</td>
+          <td>
+            <select id="VOICE_SELECTIONS" name="VOICE_SELECTIONS" size="1" onchange="voiceChanged();">
+            <option>bits3 de male unitselection general</option><option>voxforge-ru-nsh ru male unitselection general</option><option>dfki-spike en_GB male unitselection general</option><option>dfki-prudence en_GB female unitselection general</option><option>dfki-poppy en_GB female unitselection general</option><option>dfki-pavoque-styles de male unitselection general</option><option>dfki-pavoque-neutral de male unitselection general</option><option>dfki-obadiah en_GB male unitselection general</option><option>cmu-nk-hsmm te female unitselection general</option><option>upmc-pierre-hsmm fr male hmm</option><option>upmc-pierre fr male unitselection general</option><option>upmc-jessica-hsmm fr female hmm</option><option>upmc-jessica fr female unitselection general</option><option>istc-lucia-hsmm it female hmm</option><option>enst-dennys-hsmm fr male hmm</option><option>enst-camille-hsmm fr female hmm</option><option>enst-camille fr female unitselection general</option><option>dfki-spike-hsmm en_GB male hmm</option><option>dfki-prudence-hsmm en_GB female hmm</option><option>dfki-poppy-hsmm en_GB female hmm</option><option>dfki-pavoque-neutral-hsmm de male hmm</option><option>dfki-obadiah-hsmm en_GB male hmm</option><option>cmu-slt-hsmm en_US female hmm</option><option>cmu-slt en_US female unitselection general</option><option>cmu-rms-hsmm en_US male hmm</option><option>cmu-bdl-hsmm en_US male hmm</option><option>bits3-hsmm de male hmm</option><option>bits1-hsmm de female hmm</option></select>
+          </td>
+          <td width="50">
+          </td>
+          <td>
+          	  <div id="showHideEffectsButton" style="display: inline;">
+                <input type="button" value="Show Audio Effects" id="TOGGLE_EFFECTS" onclick="toggleEffectsVisibility();">
+			  </div>
+          
+          </td>
+        </tr>
+
+        <tr>
+            <td><div id="hideAudioOut">Audio-Out:</div></td>
+            <td>
+              <select name="AUDIO_OUT" id="AUDIO_OUT" size="1" onchange="audioOutChanged();">
+              <option>WAVE_FILE</option><option>AU_FILE</option><option>AIFF_FILE</option></select>
+              <div id="showHideModification" style="display: none;">
+            	<input type="checkbox" id="modification">
+            	Apply prosody modification
+              </div>
+            </td>
+        </tr>
+        <tr>
+          <td>
+             <input type="button" value="PROCESS" id="PROCESS" style="font-size: 11pt; font-weight: bold; display: none;" onclick="requestSynthesis();">
+             <input type="button" value="SPEAK" id="SPEAK" style="font-size: 11pt; font-weight: bold; display: inline;" onclick="requestSynthesis();">
+          </td>
+          <td></td>
+
+        </tr>
+
+        <input type="hidden" id="LOCALE" name="LOCALE" value="en_US">
+        <input type="hidden" id="VOICE" name="VOICE" value="cmu-slt-hsmm">
+        <input type="hidden" id="AUDIO" name="AUDIO" value="WAVE_FILE">
+
+
+
+    </tbody></table>
+  </form>
+  <div id="audioDestination" style="display: inline;"><audio src="process?INPUT_TYPE=ACOUSTPARAMS&amp;OUTPUT_TYPE=AUDIO&amp;INPUT_TEXT=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Cmaryxml%20xmlns%3Axsi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema-instance%22%20version%3D%220.5%22%20xml%3Alang%3D%22en-US%22%20xmlns%3D%22http%3A%2F%2Fmary.dfki.de%2F2002%2FMaryXML%22%3E%0A%20%20%3Cp%3E%0A%20%20%20%20%3Cvoice%20name%3D%22cmu-slt-hsmm%22%3E%0A%20%20%20%20%20%20%3Cs%3E%0A%20%20%20%20%20%20%20%20%3Cphrase%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ct%20g2p_method%3D%22lexicon%22%20ph%3D%22&#39;%20l%20A%22%20pos%3D%22FW%22%3Ela%3Csyllable%20ph%3D%22l%20A%22%20stress%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2241%22%20end%3D%220.205%22%20f0%3D%22(1%2C440.0)(100%2C440.0)%22%20p%3D%22l%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2279%22%20end%3D%220.39999998%22%20f0%3D%22(1%2C440.0)(100%2C440.0)%22%20p%3D%22A%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fsyllable%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2Ft%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ct%20g2p_method%3D%22lexicon%22%20ph%3D%22&#39;%20l%20A%22%20pos%3D%22FW%22%3Ela%3Csyllable%20ph%3D%22l%20A%22%20stress%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2240%22%20end%3D%220.53%22%20f0%3D%22(1%2C369.99)(100%2C369.99)%22%20p%3D%22l%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2280%22%20end%3D%220.65999997%22%20f0%3D%22(1%2C369.99)(100%2C369.99)%22%20p%3D%22A%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fsyllable%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2Ft%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cboundary%20breakindex%3D%225%22%20duration%3D%22400%22%20tone%3D%22L-L%25%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fphrase%3E%0A%20%20%20%20%20%20%3C%2Fs%3E%0A%20%20%20%20%3C%2Fvoice%3E%0A%20%20%3C%2Fp%3E%0A%3C%2Fmaryxml%3E%0A&amp;OUTPUT_TEXT=&amp;effect_Volume_selected=&amp;effect_Volume_parameters=amount%3A2.0%3B&amp;effect_Volume_default=Default&amp;effect_Volume_help=Help&amp;effect_TractScaler_selected=&amp;effect_TractScaler_parameters=amount%3A1.5%3B&amp;effect_TractScaler_default=Default&amp;effect_TractScaler_help=Help&amp;effect_F0Scale_selected=&amp;effect_F0Scale_parameters=f0Scale%3A2.0%3B&amp;effect_F0Scale_default=Default&amp;effect_F0Scale_help=Help&amp;effect_F0Add_selected=&amp;effect_F0Add_parameters=f0Add%3A50.0%3B&amp;effect_F0Add_default=Default&amp;effect_F0Add_help=Help&amp;effect_Rate_selected=&amp;effect_Rate_parameters=durScale%3A1.5%3B&amp;effect_Rate_default=Default&amp;effect_Rate_help=Help&amp;effect_Robot_selected=&amp;effect_Robot_parameters=amount%3A100.0%3B&amp;effect_Robot_default=Default&amp;effect_Robot_help=Help&amp;effect_Whisper_selected=&amp;effect_Whisper_parameters=amount%3A100.0%3B&amp;effect_Whisper_default=Default&amp;effect_Whisper_help=Help&amp;effect_Stadium_selected=&amp;effect_Stadium_parameters=amount%3A100.0&amp;effect_Stadium_default=Default&amp;effect_Stadium_help=Help&amp;effect_Chorus_selected=&amp;effect_Chorus_parameters=delay1%3A466%3Bamp1%3A0.54%3Bdelay2%3A600%3Bamp2%3A-0.10%3Bdelay3%3A250%3Bamp3%3A0.30&amp;effect_Chorus_default=Default&amp;effect_Chorus_help=Help&amp;effect_FIRFilter_selected=&amp;effect_FIRFilter_parameters=type%3A3%3Bfc1%3A500.0%3Bfc2%3A2000.0&amp;effect_FIRFilter_default=Default&amp;effect_FIRFilter_help=Help&amp;effect_JetPilot_selected=&amp;effect_JetPilot_parameters=&amp;effect_JetPilot_default=Default&amp;effect_JetPilot_help=Help&amp;HELP_TEXT=&amp;exampleTexts=&amp;VOICE_SELECTIONS=cmu-slt-hsmm%20en_US%20female%20hmm&amp;AUDIO_OUT=WAVE_FILE&amp;LOCALE=en_US&amp;VOICE=cmu-slt-hsmm&amp;AUDIO=WAVE_FILE" autoplay="" controls=""></audio><div><a href="http://mary.dfki.de:59125/process?INPUT_TYPE=ACOUSTPARAMS&amp;OUTPUT_TYPE=AUDIO&amp;INPUT_TEXT=%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Cmaryxml%20xmlns%3Axsi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema-instance%22%20version%3D%220.5%22%20xml%3Alang%3D%22en-US%22%20xmlns%3D%22http%3A%2F%2Fmary.dfki.de%2F2002%2FMaryXML%22%3E%0A%20%20%3Cp%3E%0A%20%20%20%20%3Cvoice%20name%3D%22cmu-slt-hsmm%22%3E%0A%20%20%20%20%20%20%3Cs%3E%0A%20%20%20%20%20%20%20%20%3Cphrase%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ct%20g2p_method%3D%22lexicon%22%20ph%3D%22%27%20l%20A%22%20pos%3D%22FW%22%3Ela%3Csyllable%20ph%3D%22l%20A%22%20stress%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2241%22%20end%3D%220.205%22%20f0%3D%22(1%2C440.0)(100%2C440.0)%22%20p%3D%22l%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2279%22%20end%3D%220.39999998%22%20f0%3D%22(1%2C440.0)(100%2C440.0)%22%20p%3D%22A%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fsyllable%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2Ft%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ct%20g2p_method%3D%22lexicon%22%20ph%3D%22%27%20l%20A%22%20pos%3D%22FW%22%3Ela%3Csyllable%20ph%3D%22l%20A%22%20stress%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2240%22%20end%3D%220.53%22%20f0%3D%22(1%2C369.99)(100%2C369.99)%22%20p%3D%22l%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cph%20d%3D%2280%22%20end%3D%220.65999997%22%20f0%3D%22(1%2C369.99)(100%2C369.99)%22%20p%3D%22A%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fsyllable%3E%0A%20%20%20%20%20%20%20%20%20%20%3C%2Ft%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cboundary%20breakindex%3D%225%22%20duration%3D%22400%22%20tone%3D%22L-L%25%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fphrase%3E%0A%20%20%20%20%20%20%3C%2Fs%3E%0A%20%20%20%20%3C%2Fvoice%3E%0A%20%20%3C%2Fp%3E%0A%3C%2Fmaryxml%3E%0A&amp;OUTPUT_TEXT=&amp;effect_Volume_selected=&amp;effect_Volume_parameters=amount%3A2.0%3B&amp;effect_Volume_default=Default&amp;effect_Volume_help=Help&amp;effect_TractScaler_selected=&amp;effect_TractScaler_parameters=amount%3A1.5%3B&amp;effect_TractScaler_default=Default&amp;effect_TractScaler_help=Help&amp;effect_F0Scale_selected=&amp;effect_F0Scale_parameters=f0Scale%3A2.0%3B&amp;effect_F0Scale_default=Default&amp;effect_F0Scale_help=Help&amp;effect_F0Add_selected=&amp;effect_F0Add_parameters=f0Add%3A50.0%3B&amp;effect_F0Add_default=Default&amp;effect_F0Add_help=Help&amp;effect_Rate_selected=&amp;effect_Rate_parameters=durScale%3A1.5%3B&amp;effect_Rate_default=Default&amp;effect_Rate_help=Help&amp;effect_Robot_selected=&amp;effect_Robot_parameters=amount%3A100.0%3B&amp;effect_Robot_default=Default&amp;effect_Robot_help=Help&amp;effect_Whisper_selected=&amp;effect_Whisper_parameters=amount%3A100.0%3B&amp;effect_Whisper_default=Default&amp;effect_Whisper_help=Help&amp;effect_Stadium_selected=&amp;effect_Stadium_parameters=amount%3A100.0&amp;effect_Stadium_default=Default&amp;effect_Stadium_help=Help&amp;effect_Chorus_selected=&amp;effect_Chorus_parameters=delay1%3A466%3Bamp1%3A0.54%3Bdelay2%3A600%3Bamp2%3A-0.10%3Bdelay3%3A250%3Bamp3%3A0.30&amp;effect_Chorus_default=Default&amp;effect_Chorus_help=Help&amp;effect_FIRFilter_selected=&amp;effect_FIRFilter_parameters=type%3A3%3Bfc1%3A500.0%3Bfc2%3A2000.0&amp;effect_FIRFilter_default=Default&amp;effect_FIRFilter_help=Help&amp;effect_JetPilot_selected=&amp;effect_JetPilot_parameters=&amp;effect_JetPilot_default=Default&amp;effect_JetPilot_help=Help&amp;HELP_TEXT=&amp;exampleTexts=&amp;VOICE_SELECTIONS=cmu-slt-hsmm%20en_US%20female%20hmm&amp;AUDIO_OUT=WAVE_FILE&amp;LOCALE=en_US&amp;VOICE=cmu-slt-hsmm&amp;AUDIO=WAVE_FILE">Save audio file</a></div></div>
+
+
+<small><a href="http://mary.dfki.de:59125/documentation.html">Interactive documentation of the HTTP interface to MARY TTS</a></small> 
+
+  </font>
+
+
+</body></html>
