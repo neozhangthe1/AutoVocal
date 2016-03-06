@@ -27,7 +27,7 @@ def generate_song():
         wraper_node.insert(n[0], n[1])
 
     sound = client.generate(ET.tostring(root).decode("utf-8"), "ACOUSTPARAMS", "AUDIO", "cmu-rms-hsmm")
-    with open("test.wav", "wb") as f_out:
+    with open("results/starwars_happy_vocal.wav", "wb") as f_out:
         f_out.write(sound)
 
 
@@ -61,7 +61,7 @@ def parse_midi():
                 pitches.append((cur_pitch, m.note))
                 velocities.append((cur_velocity, m.velocity))
         elif m.type == 'set_tempo':
-            tempo = 1.0 / 104 * 60000000#m.tempo
+            tempo = m.tempo
             time_per_tick = get_time_per_tick(tempo, mid.ticks_per_beat)
         cur_time += real_time
 
@@ -100,18 +100,26 @@ def generate_syllables(syllable_nodes, word_nodes, rhythms, pitches):
 
 def modify_xml(syllables, nodes):
     new_nodes = []
-    offset = 0
-    w_offset = 0
+    offset = 0  # offset of syllable
+    w_offset = 0  # offset of the syllable that current node will be inserted after
     for w in nodes:
+        # insert a silent node before a word
+        if type(syllables[offset]) is int:
+            dummy_node = ET.fromstring('<boundary breakindex="5" duration="%s"/>' % syllables[offset])
+            new_nodes.append((w_offset, dummy_node))
+            offset += 1
+            w_offset += 1
         for s in w.findall(".//{http://mary.dfki.de/2002/MaryXML}syllable"):
             total_duration = 0
             durations = []
-            if type(syllables[offset]) is int:
-                dummy_node = ET.fromstring('<boundary breakindex="5" duration="%s"/>' % syllables[offset])
-                new_nodes.append((w_offset, dummy_node))
-                offset += 1
-                w_offset += 1
             syl = syllables[offset]
+            note_duration = syl[1].duration
+            offset += 1
+
+            if len(syllables) > offset and type(syllables[offset]) is int:
+                note_duration += syllables[offset]
+                offset += 1
+
             phoneme_nodes = s.findall(".//{http://mary.dfki.de/2002/MaryXML}ph")
             for p in phoneme_nodes:
                 phoneme_duration = int(p.attrib["d"])
@@ -123,12 +131,11 @@ def modify_xml(syllables, nodes):
 
             for j, d in enumerate(durations):
                 percentage = float(d) / total_duration
-                durations[j] = round(percentage * syl[1].duration)
+                durations[j] = round(percentage * note_duration)
 
             for j, p in enumerate(phoneme_nodes):
                 p.attrib["d"] = str(durations[j])
                 p.attrib["f0"] = "(1,%s)(100,%s)" % (syl[1].pitch, syl[1].pitch)
-            offset += 1
         w_offset += 1
 
     return new_nodes
